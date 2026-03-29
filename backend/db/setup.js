@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { pool } = require('./pool');
-
+console.log("STARTING DB SETUP...");
 async function setup() {
   const client = await pool.connect();
   try {
@@ -175,6 +175,7 @@ async function setup() {
     client.release();
     await pool.end();
   }
+  console.log("STARTING DB SETUP...");
 }
 
 setup().catch(() => process.exit(1));
