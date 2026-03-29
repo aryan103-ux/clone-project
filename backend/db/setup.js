@@ -174,9 +174,7 @@ async function setup() {
     throw err;
   } finally {
     client.release();
-    await pool.end();
   }
-  console.log("STARTING DB SETUP...");
 }
 
 setup().catch(() => process.exit(1));
