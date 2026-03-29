@@ -6,12 +6,7 @@ async function setup() {
   try {
     console.log('🔧 Setting up database schema...');
     await client.query(`
-      DROP TABLE IF EXISTS order_items CASCADE;
-      DROP TABLE IF EXISTS orders CASCADE;
-      DROP TABLE IF EXISTS cart_items CASCADE;
-      DROP TABLE IF EXISTS products CASCADE;
-      DROP TABLE IF EXISTS categories CASCADE;
-      DROP TABLE IF EXISTS users CASCADE;
+      
       CREATE TABLE IF NOT EXISTS users (
         id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         name         VARCHAR(100) NOT NULL,
@@ -114,7 +109,7 @@ async function setup() {
         ('Toys',            'toys',            '🧸'),
         ('Beauty',          'beauty',          '💄'),
         ('Automotive',      'automotive',      '🚗')
-      ;
+      ON CONFLICT (slug) DO NOTHING;
     `);
 
     // Seed sample products
@@ -168,7 +163,7 @@ async function setup() {
         ('Adidas Ultraboost 23', 'Boost cushioning, Primeknit upper, Continental rubber outsole', 189.99, 230.00, 90,
          (SELECT id FROM categories WHERE slug='clothing'),
          'https://via.placeholder.com/300x300/131921/FEBD69?text=Adidas+UB23', 4.6, 2830, TRUE, 'Adidas')
-      ;
+      ON CONFLICT DO NOTHING;
     `);
 
     console.log('✅ Database setup complete!');

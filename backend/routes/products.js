@@ -2,6 +2,31 @@ const express  = require('express');
 const { pool } = require('../db/pool');
 const router   = express.Router();
 
+// GET /api/products/category/all
+router.get('/categories/all', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM categories ORDER BY name');
+    res.json({ categories: result.rows });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch categories' });
+  }
+});
+
+// GET /api/products/:id
+router.get('/:id', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+       FROM products p LEFT JOIN categories c ON p.category_id = c.id
+       WHERE p.id = $1`, [req.params.id]
+    );
+    if (!result.rows.length) return res.status(404).json({ error: 'Product not found' });
+    res.json({ product: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch product' });
+  }
+});
+
 // GET /api/products  (with optional ?category=slug&q=search&sort=price_asc&page=1&limit=12)
 router.get('/', async (req, res) => {
   const { category, q, sort = 'created_at_desc', page = 1, limit = 12 } = req.query;
@@ -52,29 +77,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/products/:id
-router.get('/:id', async (req, res) => {
-  try {
-    const result = await pool.query(
-      `SELECT p.*, c.name AS category_name, c.slug AS category_slug
-       FROM products p LEFT JOIN categories c ON p.category_id = c.id
-       WHERE p.id = $1`, [req.params.id]
-    );
-    if (!result.rows.length) return res.status(404).json({ error: 'Product not found' });
-    res.json({ product: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch product' });
-  }
-});
 
-// GET /api/products/category/all
-router.get('/categories/all', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM categories ORDER BY name');
-    res.json({ categories: result.rows });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch categories' });
-  }
-});
+
+
 
 module.exports = router;
