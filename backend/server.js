@@ -63,11 +63,7 @@ app.listen(PORT, async () => {
   console.log(`\n🚀 Amazon Clone running at http://localhost:${PORT}`);
   console.log(`   Environment: ${process.env.NODE_ENV}\n`);
 
-    // 🚨 AUTO SETUP (TEMP)
-//  if (process.env.NODE_ENV === 'production') {
-//   require('./db/setup');
-// }
-if (process.env.NODE_ENV !== 'production') {
-  require('./db/setup');
-}
+  if (process.env.NODE_ENV === 'production') {
+    require('./db/setup');
+  }
 });
