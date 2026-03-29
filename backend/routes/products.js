@@ -8,7 +8,8 @@ router.get('/categories/all', async (req, res) => {
     const result = await pool.query('SELECT * FROM categories ORDER BY name');
     res.json({ categories: result.rows });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch categories' });
+    console.error("CATEGORY ERROR:", err); // 👈 ADD THIS
+    res.status(500).json({ error: err.message }); // 👈 SHOW REAL ERROR
   }
 });
 
