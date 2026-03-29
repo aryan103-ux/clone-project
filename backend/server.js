@@ -58,14 +58,4 @@ app.listen(PORT, async () => {
   console.log(`\n🚀 Amazon Clone running at http://localhost:${PORT}`);
   console.log(`   Environment: ${process.env.NODE_ENV}\n`);
 
-  // 🚨 TEMP: Run DB setup ONCE in production
-  if (process.env.NODE_ENV === 'production') {
-    console.log("⚙️ Running DB setup...");
-    try {
-      await require('./db/setup');
-      console.log("✅ DB setup finished");
-    } catch (err) {
-      console.error("❌ DB setup failed:", err);
-    }
-  }
 });
