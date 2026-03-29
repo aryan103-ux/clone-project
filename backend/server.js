@@ -57,16 +57,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-// const PORT = process.env.PORT || 3000;
-
-// app.listen(PORT, async () => {
-//   console.log(`\n🚀 Amazon Clone running at http://localhost:${PORT}`);
-//   console.log(`   Environment: ${process.env.NODE_ENV}\n`);
-
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+app.listen(PORT, async () => {
+  console.log(`\n🚀 Amazon Clone running at http://localhost:${PORT}`);
+  console.log(`   Environment: ${process.env.NODE_ENV}\n`);
 
     // 🚨 AUTO SETUP (TEMP)
  if (process.env.NODE_ENV === 'production') {
